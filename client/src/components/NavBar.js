@@ -26,21 +26,21 @@ const NavBar = observer(() => {
                     <Nav className="ml-auto" style={{color: 'green'}}>
                         <Button
                             variant="outline-dark"
-                            onClick={() => history.push(ADMIN_ROUTE)}
+                            onClick={() => history(ADMIN_ROUTE)}
                         >
-                            Админ панель
+                            Admin
                         </Button>
                         <Button
                         variant="outline-dark"
                             onClick={() => logOut()}
                             className="ml-2"
                         >
-                            Выйти
+                            LogOut
                         </Button>
                     </Nav>
                     :
                     <Nav className="ml-auto" style={{color: 'green'}}>
-                        <Button variant="outline-dark"  onClick={() => history.push(LOGIN_ROUTE)}>Авторизация</Button>
+                        <Button variant="outline-dark"  onClick={() => history(LOGIN_ROUTE)}>LogIn</Button>
                     </Nav>
                 }
             </Container>

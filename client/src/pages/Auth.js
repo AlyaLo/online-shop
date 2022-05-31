@@ -1,11 +1,38 @@
-import React from "react";
-import { Container, Form, Card, Button, Row } from "react-bootstrap";
-import { NavLink,useLocation } from "react-router-dom";
-import {LOGIN_ROUTE, REGISTRATION_ROUTE} from '../utils/consts'
+import React, {useContext, useState} from 'react';
+import {Container, Form} from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import {NavLink, useLocation, useNavigate} from "react-router-dom";
+import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {login, registration} from "../http/userAPI";
+import {observer} from "mobx-react-lite";
+import {Context} from "../index";
 
 const Auth = () => {
-    let location = useLocation();
-    let isLogin = location.pathname === LOGIN_ROUTE
+    const {user} = useContext(Context)
+    const location = useLocation()
+    const history = useNavigate()
+    const isLogin = location.pathname === LOGIN_ROUTE
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const click = async () => {
+        try {
+            let data;
+            if (isLogin) {
+                data = await login(email, password);
+            } else {
+                data = await registration(email, password);
+            }
+            user.setUser(user)
+            user.setIsAuth(true)
+            history(SHOP_ROUTE)
+        } catch (e) {
+            alert(e.response.data.message)
+        }
+
+    }
     return(
         <Container
             className=" d-flex justify-content-center align-items-center"
@@ -45,7 +72,7 @@ const Auth = () => {
                                     </div>
                             }
     
-                        <Button className="mt-3" variant="outline-dark">
+                        <Button className="mt-3" variant="outline-dark" onClick={click}>
                             {isLogin? 'Enter' : 'Registration'}
                         </Button>
                 </Row>
